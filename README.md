@@ -1,117 +1,27 @@
-# Stereo-seq CellBin PD Analysis (GitHub-ready)
+# Stereo-seq CellBin PD analysis
 
-This repository contains a cleaned and reproducible analysis workflow for **Stereo-seq CellBin** spatial transcriptomics data in a unilateral Parkinson’s disease mouse model.
+This repo is the working record of my analysis on Stereo-seq **CellBin** spatial transcriptomics data from a unilateral α-syn PD mouse model. The goal is to keep the workflow runnable end-to-end and easy to audit (what was done, with which parameters, and where the figures/tables came from).
 
-> **Important**: CellBin units are **not true single cells**. Any "cell type" labels in this project should be interpreted as **cell-type–associated CellBin units inferred from marker expression and spatial context**.
+A note on terminology: CellBin units are not true single cells. When I write “DA neuron”, “microglia”, etc., I mean **CellBin units enriched for the corresponding marker signals and consistent spatial context**, not a definitive single-cell identity.
 
 ---
 
-## Repository contents
+## What’s here
 
 - `notebooks/Cellbin_analysis_clean.ipynb`  
-  Cleaned notebook:
-  - no Chinese comments
-  - no hard-coded personal paths
-  - richer English headers + purpose notes per step
+  The main notebook. It’s cleaned for sharing:
+  - English-only comments/section headers
+  - no hard-coded personal file paths
+  - outputs cleared (so it stays small on GitHub)
 
-- `env/environment.yml` / `requirements.txt`  
-  Reproducible environment specs.
+- `env/environment.yml` and `requirements.txt`  
+  Environment specs used to run the notebook.
 
-- `src/stereo_pd_cellbin/stats.py`  
-  Small helper functions (p-value stars, Fisher/Chi2/MWU wrappers).
+- `src/stereo_pd_cellbin/`  
+  A small helper module (mostly stats helpers such as Fisher/MWU wrappers and p-value → stars).
 
 - `scripts/run_pipeline.py`  
-  Minimal headless entrypoint (sanity load + write). The full analysis remains in the notebook.
+  A minimal command-line entrypoint to sanity-check loading and run lightweight steps without opening Jupyter.
 
 ---
 
-## Quick start
-
-### 1) Prepare data (do **not** commit raw data)
-
-Put your input `.h5ad` here:
-
-```
-data/raw/Y01504E1.cellbin_1.0.adjusted.h5ad
-```
-
-Raw data is ignored by `.gitignore` by default.
-
-### 2) Create environment
-
-Conda (recommended):
-
-```bash
-conda env create -f env/environment.yml
-conda activate stereo_pd
-```
-
-Or pip:
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-### 3) Run the notebook
-
-Open JupyterLab and run `notebooks/Cellbin_analysis_clean.ipynb` top-to-bottom:
-
-```bash
-jupyter lab
-```
-
-Edit the `INPUT_H5AD` variable at the top of the notebook.
-
----
-
-## What should be committed to GitHub?
-
-✅ Commit:
-- `README.md`
-- `notebooks/Cellbin_analysis_clean.ipynb` (preferably **without outputs**)
-- `env/environment.yml` and/or `requirements.txt`
-- `scripts/` and `src/`
-- `LICENSE`, `CITATION.cff`, `.gitignore`
-
-❌ Do NOT commit:
-- Raw data: `data/raw/`
-- Large intermediate objects or results (unless small and necessary)
-
----
-
-## Recommended Git workflow (first-time setup)
-
-```bash
-git init
-git add README.md notebooks env scripts src LICENSE CITATION.cff .gitignore requirements.txt
-git commit -m "Initial commit: cleaned CellBin analysis notebook"
-```
-
-Create a GitHub repository (web UI), then:
-
-```bash
-git branch -M main
-git remote add origin https://github.com/<YOUR_GITHUB>/<REPO>.git
-git push -u origin main
-```
-
----
-
-## Tips for clean notebooks on GitHub
-
-To automatically strip notebook outputs before committing:
-
-```bash
-pip install nbstripout
-nbstripout --install
-```
-
-Then future commits will not include heavy outputs.
-
----
-
-## Citation
-
-Update `CITATION.cff` (author + repo link). If you use this code in a manuscript, cite the repository and the underlying dataset accession (GEO/OMIX/etc.) when available.
